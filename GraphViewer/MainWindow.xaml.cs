@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace GraphViewer
@@ -23,91 +13,94 @@ namespace GraphViewer
         public MainWindow()
         {
             InitializeComponent();
-            
+        }
+        private short[] Id = new short[5];
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DrawCoordinateSystem();
         }
 
-        private void DrawAxisX()
+        private void DrawAxis(string mode)
         {
-            Line X = new();
-            X.X1 = 0;
-            X.X2 = Can.ActualWidth;
-            X.Y1 = Can.ActualHeight / 2;
-            X.Y2 = Can.ActualHeight / 2;
-            X.Stroke = Brushes.Blue;
-            Can.Children.Add(X);
-        }
-        private void DrawAxisY()
-        {
-            Line Y = new();
-            Y.X1 = Can.ActualWidth / 2;
-            Y.X2 = Can.ActualWidth / 2;
-            Y.Y1 = 0;
-            Y.Y2 = Can.ActualHeight;
-            Y.Stroke = Brushes.Blue;
-            Can.Children.Add(Y);
-        }
-        public void DrawCosinus()
-        {
-
-            double h = Can.ActualHeight / 2;
-            double w = Can.ActualWidth / 2;
-            for (var x = -w / 5; x <= w / 5; x += 0.1)
+            if (mode == "X")
             {
-                double y = Math.Cos(x) * 35 + h;
-                EllipseGeometry el = new();
-                el.Center = new Point(x * 5 + w, y);
-                el.RadiusX = 0.5;
-                el.RadiusY = 2;
-                Path p = new();
-                p.Data = el;
-                p.Fill = Brushes.Black;
-                Can.Children.Add(p);
+                Line L = new();
+                L.X1 = 0;
+                L.X2 = Can.ActualWidth;
+                L.Y1 = Can.ActualHeight / 2;
+                L.Y2 = Can.ActualHeight / 2;
+                L.Stroke = Brushes.Blue;
+                Can.Children.Add(L);
             }
-        }
-        public void DrawSinus()
-        {
-
-            double h = Can.ActualHeight / 2;
-            double w = Can.ActualWidth / 2;
-            for (var x = -w / 5; x <= w / 5; x += 0.1)
+            else
             {
-                double y = Math.Sin(x) * 35 + h;
-                EllipseGeometry el = new();
-                el.Center = new Point(x * 5 + w, y);
-                el.RadiusX = 0.5;
-                el.RadiusY = 2;
-                Path p = new();
-                p.Data = el;
-                p.Fill = Brushes.Black;
-                Can.Children.Add(p);
+                Line L = new();
+                L.X1 = Can.ActualWidth / 2;
+                L.X2 = Can.ActualWidth / 2;
+                L.Y1 = 0;
+                L.Y2 = Can.ActualHeight;
+                L.Stroke = Brushes.Blue;
+                Can.Children.Add(L);
             }
         }
 
-        public void DrawTangens()
+        private void DrawCoordinateSystem()
         {
+            DrawAxis("X");
+            DrawAxis("Y");
 
-            double h = Can.ActualHeight / 2;
-            double w = Can.ActualWidth / 2;
-            for (var x = -w / 5; x <= w / 5; x += 0.1)
-            {
-                double y = Math.Tan(x) * 5 + h;
-                EllipseGeometry el = new();
-                el.Center = new Point(x * 5 + w, y);
-                el.RadiusX = 0.5;
-                el.RadiusY = 2;
-                Path p = new();
-                p.Data = el;
-                p.Fill = Brushes.Black;
-                Can.Children.Add(p);
-            }
         }
-        private void DrawParab()
+
+        private void DrawGraph(string mode)
         {
             double h = Can.ActualHeight / 2;
             double w = Can.ActualWidth / 2;
+            //double x0 = -w / 5;
+            //double y0;
+            //switch (mode)
+            //{
+            //    case "Cosinus":
+            //        y0 = -Math.Cos(x0) * 35 + h;
+            //        break;
+            //    case "Sinus":
+            //        y0 = -Math.Sin(x0) * 35 + h;
+            //        break;
+            //    case "Tangens":
+            //        y0 = -Math.Tan(x0) * 5 + h;
+            //        break;
+            //    case "Parable":
+            //        y0 = -(x0 * x0 + x0 + 1) * 5 + h;
+            //        break;
+            //    default:
+            //        y0 = -(2 * x0 + 6 * x0 * x0 * x0) / Math.Sin(x0) + h;
+            //        break;
+            //}
             for (var x = -w / 5; x <= w / 5; x += 0.1)
             {
-                double y = -(x * x + x + 1) * 5 + h;
+                double y;
+                switch (mode)
+                {
+                    case "Cosinus":
+                        Id[0] = 1;
+                        y = -Math.Cos(x) * 35 + h;
+                        break;
+                    case "Sinus":
+                        Id[1] = 1;
+                        y = -Math.Sin(x) * 35 + h;
+                        break;
+                    case "Tangens":
+                        Id[2] = 1;
+                        y = -Math.Tan(x) * 5 + h;
+                        break;
+                    case "Parable":
+                        Id[3] = 1;
+                        y = -(x * x + x + 1) * 5 + h;
+                        break;
+                    default:
+                        Id[4] = 1;
+                        y = -(2 * x + 6 * x * x * x) / Math.Sin(x) + h;
+                        break;
+                }
                 EllipseGeometry el = new();
                 el.Center = new Point(x * 5 + w, y);
                 el.RadiusX = 0.5;
@@ -116,38 +109,80 @@ namespace GraphViewer
                 p.Data = el;
                 p.Fill = Brushes.Black;
                 Can.Children.Add(p);
+                //            LineGeometry line = new();
+                //            line.StartPoint = new Point(x03 + w5, y03);
+                //            line.EndPoint = new Point(x + w5, y);
+                //            Path p = new();
+                //            p.Data = line;
+                //            p.Stroke = Brushes.Black;
+                //            Can.Children.Add(p);
+                //            x03 = x;
+                //            y03 = y;
+
             }
         }
 
         private void DrawCosX_Click(object sender, RoutedEventArgs e)
         {
-            DrawCosinus();
+            DrawGraph("Cosinus");
         }
         private void DrawSinX_Click(object sender, RoutedEventArgs e)
         {
-            DrawSinus();
+            DrawGraph("Sinus");
         }
         private void DrawTanX_Click(object sender, RoutedEventArgs e)
         {
-            DrawTangens();
+            DrawGraph("Tangens");
         }
         private void DrawPar_Click(object sender, RoutedEventArgs e)
         {
-            DrawParab();
+            DrawGraph("Parable");
+        }
+        private void DrawComplex_Click(object sender, RoutedEventArgs e)
+        {
+            DrawGraph("Complex");
         }
 
         private void ClearField_Click(object sender, RoutedEventArgs e)
         {
             Can.Children.Clear();
-            DrawAxisX();
-            DrawAxisY();
+            for (var i = 0; i < Id.Length; i++)
+            {
+                Id[i] = 0;
+            }
+            DrawCoordinateSystem();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            DrawAxisX();
-            DrawAxisY();
-        }
+            Can.Children.Clear();
 
+            if (Id[0] == 1)
+            {
+                DrawGraph("Cosinus");
+            }
+            
+            if (Id[1] == 1)
+            {
+                DrawGraph("Sinus");
+            }
+            
+            if (Id[2] == 1)
+            {
+                DrawGraph("Tangens");
+            }
+            
+            if (Id[3] == 1)
+            {
+                DrawGraph("Parable");
+            }
+
+            if (Id[4] == 1)
+            {
+                DrawGraph("Complex");
+            }
+            
+            DrawCoordinateSystem();
+        }
     }
 }

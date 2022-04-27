@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:GraphViewer"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" SizeChanged="Window_SizeChanged"
+        >
     <Grid>
         <Canvas x:Name="Can" Margin="30,30,30,30">
         </Canvas>
@@ -15,5 +16,7 @@
         <Button x:Name="DrawTanX" Content="Draw tan(x)" HorizontalAlignment="Left" VerticalAlignment="Top" Click="DrawTanX_Click" Margin="150,10,0,0"/>
         <Button x:Name="DrawPar" Content="Draw x^2 + x + 1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="DrawPar_Click" Margin="220,10,0,0"/>
         <Button x:Name="ClearField" Content="Clear Field" HorizontalAlignment="Right" VerticalAlignment="Top" Click="ClearField_Click" Margin="0,0,30,0"/>
+        <Button x:Name="DrawComplex" Content="Draw -(2x + 6x^3)/sin(x)" HorizontalAlignment="Left" VerticalAlignment="Top" Click="DrawComplex_Click" Margin="321,10,0,0"/>
+
     </Grid>
 </Window>
