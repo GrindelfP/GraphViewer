@@ -14,7 +14,7 @@ namespace GraphViewer
         {
             InitializeComponent();
         }
-        private short[] Id = new short[5];
+        private readonly byte[] Id = new byte[5];
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DrawCoordinateSystem();
@@ -50,57 +50,14 @@ namespace GraphViewer
             DrawAxis("Y");
 
         }
-
-        private void DrawGraph(string mode)
+        private void DrawCos()
         {
             double h = Can.ActualHeight / 2;
             double w = Can.ActualWidth / 2;
-            //double x0 = -w / 5;
-            //double y0;
-            //switch (mode)
-            //{
-            //    case "Cosinus":
-            //        y0 = -Math.Cos(x0) * 35 + h;
-            //        break;
-            //    case "Sinus":
-            //        y0 = -Math.Sin(x0) * 35 + h;
-            //        break;
-            //    case "Tangens":
-            //        y0 = -Math.Tan(x0) * 5 + h;
-            //        break;
-            //    case "Parable":
-            //        y0 = -(x0 * x0 + x0 + 1) * 5 + h;
-            //        break;
-            //    default:
-            //        y0 = -(2 * x0 + 6 * x0 * x0 * x0) / Math.Sin(x0) + h;
-            //        break;
-            //}
             for (var x = -w / 5; x <= w / 5; x += 0.1)
             {
-                double y;
-                switch (mode)
-                {
-                    case "Cosinus":
-                        Id[0] = 1;
-                        y = -Math.Cos(x) * 35 + h;
-                        break;
-                    case "Sinus":
-                        Id[1] = 1;
-                        y = -Math.Sin(x) * 35 + h;
-                        break;
-                    case "Tangens":
-                        Id[2] = 1;
-                        y = -Math.Tan(x) * 5 + h;
-                        break;
-                    case "Parable":
-                        Id[3] = 1;
-                        y = -(x * x + x + 1) * 5 + h;
-                        break;
-                    default:
-                        Id[4] = 1;
-                        y = -(2 * x + 6 * x * x * x) / Math.Sin(x) + h;
-                        break;
-                }
+                Id[0] = 1;
+                double y = -Math.Cos(x) * 35 + h;
                 EllipseGeometry el = new();
                 el.Center = new Point(x * 5 + w, y);
                 el.RadiusX = 0.5;
@@ -109,38 +66,108 @@ namespace GraphViewer
                 p.Data = el;
                 p.Fill = Brushes.Black;
                 Can.Children.Add(p);
-                //            LineGeometry line = new();
-                //            line.StartPoint = new Point(x03 + w5, y03);
-                //            line.EndPoint = new Point(x + w5, y);
-                //            Path p = new();
-                //            p.Data = line;
-                //            p.Stroke = Brushes.Black;
-                //            Can.Children.Add(p);
-                //            x03 = x;
-                //            y03 = y;
-
             }
         }
-
+        private void DrawSin()
+        {
+            double h = Can.ActualHeight / 2;
+            double w = Can.ActualWidth / 2;
+            for (var x = -w / 5; x <= w / 5; x += 0.1)
+            {
+                Id[1] = 1;
+                double y = -Math.Sin(x) * 35 + h;
+                EllipseGeometry el = new();
+                el.Center = new Point(x * 5 + w, y);
+                el.RadiusX = 0.5;
+                el.RadiusY = 2;
+                Path p = new();
+                p.Data = el;
+                p.Fill = Brushes.Black;
+                Can.Children.Add(p);
+            }
+        }
+        private void DrawTan()
+        {
+            var h = Can.ActualHeight / 2;
+            var w = Can.ActualWidth / 2;
+            var x0 = -w / 5;
+            var y0 = -(Math.Tan(x0)) * 5 + h;
+            for (var x = -w / 5; x <= w / 5; x += 0.1)
+            {
+                Id[2] = 1;
+                double y = -Math.Tan(x) * 5 + h;
+                LineGeometry line = new();
+                line.StartPoint = new Point(20 * x0 + w, y0);
+                line.EndPoint = new Point(20 * x + w, y);
+                Path p = new();
+                p.Data = line;
+                p.Stroke = Brushes.Black;
+                Can.Children.Add(p);
+                x0 = x;
+                y0 = y;
+            }
+        }
+        private void DrawParable()
+        {
+            var h = Can.ActualHeight / 2;
+            var w = Can.ActualWidth / 2;
+            var x0 = -w / 5;
+            var y0 = -(x0 * x0 + x0 + 1) * 5 + h;
+            for (var x = -w / 5; x <= w / 5; x += 0.1)
+            {
+                Id[3] = 1;
+                double y = -(x * x + x + 1) * 5 + h;
+                LineGeometry line = new();
+                line.StartPoint = new Point(7*x0 + w, y0);
+                line.EndPoint = new Point(7*x + w, y);
+                Path p = new();
+                p.Data = line;
+                p.Stroke = Brushes.Black;
+                Can.Children.Add(p);
+                x0 = x;
+                y0 = y;
+            }
+        }
+        private void DrawComplexGraph()
+        {
+            var h = Can.ActualHeight / 2;
+            var w = Can.ActualWidth / 2;
+            var x0 = -w / 5;
+            var y0 = -(2 * x0 + 6 * x0 * x0 * x0)/Math.Sin(x0) + Math.Tan(x0) + h;
+            for (var x = -w / 5; x <= w / 5; x += 0.1)
+            {
+                Id[4] = 1;
+                double y = -(2 * x + 6 * x * x * x) / Math.Sin(x) + Math.Tan(x) + h;
+                LineGeometry line = new();
+                line.StartPoint = new Point(5*x0 + w, y0);
+                line.EndPoint = new Point(5*x + w, y);
+                Path p = new();
+                p.Data = line;
+                p.Stroke = Brushes.Black;
+                Can.Children.Add(p);
+                x0 = x;
+                y0 = y;
+            }
+        }
         private void DrawCosX_Click(object sender, RoutedEventArgs e)
         {
-            DrawGraph("Cosinus");
+            DrawCos();
         }
         private void DrawSinX_Click(object sender, RoutedEventArgs e)
         {
-            DrawGraph("Sinus");
+            DrawSin();
         }
         private void DrawTanX_Click(object sender, RoutedEventArgs e)
         {
-            DrawGraph("Tangens");
+            DrawTan();
         }
         private void DrawPar_Click(object sender, RoutedEventArgs e)
         {
-            DrawGraph("Parable");
+            DrawParable();
         }
         private void DrawComplex_Click(object sender, RoutedEventArgs e)
         {
-            DrawGraph("Complex");
+            DrawComplexGraph();
         }
 
         private void ClearField_Click(object sender, RoutedEventArgs e)
@@ -159,27 +186,27 @@ namespace GraphViewer
 
             if (Id[0] == 1)
             {
-                DrawGraph("Cosinus");
+                DrawCos();
             }
-            
+
             if (Id[1] == 1)
             {
-                DrawGraph("Sinus");
+                DrawSin();
             }
-            
+
             if (Id[2] == 1)
             {
-                DrawGraph("Tangens");
+                DrawTan();
             }
-            
+
             if (Id[3] == 1)
             {
-                DrawGraph("Parable");
+                DrawParable();
             }
 
             if (Id[4] == 1)
             {
-                DrawGraph("Complex");
+                DrawComplexGraph();
             }
             
             DrawCoordinateSystem();
