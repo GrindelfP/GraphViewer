@@ -8,7 +8,7 @@ namespace GraphViewer
         {
             InitializeComponent();
         }
-        private readonly GraphView GraphView = new GraphView();
+        private readonly GraphView GraphView = new();
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             GraphView.DrawCoordinateSystem();

@@ -138,6 +138,5 @@ namespace GraphViewer
                 y0 = y;
             }
         }
-
     }
 }
